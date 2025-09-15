@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3 
+    container_name: nyc_transit_db
+    restart: always
+    environment:
+      POSTGRES_USER: hiro_admin
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: nyc_transit
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7-alpine
+    container_name: nyc_transit_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
